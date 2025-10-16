@@ -1,0 +1,41 @@
+# Development/Testing Docker Compose Configuration
+# Uses /tmp for ephemeral storage
+# External port: 64181:80 (random unused port in 64xxx range)
+
+services:
+  echoip:
+    image: echoip:dev
+    container_name: echoip-test
+    restart: "no"
+
+    environment:
+      - CONFIG_DIR=/config
+      - DATA_DIR=/data
+      - LOGS_DIR=/logs
+      - PORT=80
+      - ADDRESS=0.0.0.0
+      - DEV=true
+
+    volumes:
+      - /tmp/echoip/rootfs/config/echoip:/config
+      - /tmp/echoip/rootfs/data/echoip:/data
+      - /tmp/echoip/rootfs/logs/echoip:/logs
+
+    ports:
+      - "64181:80"
+
+    networks:
+      - echoip
+
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/echoip", "-status"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  echoip:
+    name: echoip
+    external: false
+    driver: bridge

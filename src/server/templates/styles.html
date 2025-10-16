@@ -1,0 +1,311 @@
+<style>
+  html,
+  .pure-g [class*='pure-u'] {
+    background-color: white;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  pre {
+    font-family: 'Monaco', 'Menlo', 'Consolas', 'Courier New', monospace;
+    white-space: pre-wrap;
+    /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+  }
+
+  a {
+    /* background: #e3e3e3; */
+    text-decoration: underline;
+    color: #000;
+  }
+
+  a:hover,
+  active {
+    background: #d7d7d7;
+  }
+
+  .ip {
+    border: 1px solid #cbcbcb;
+    background: #f2f2f2;
+    font-size: 36px;
+    padding: 6px;
+    word-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Mobile-specific styles for IP addresses */
+  @media (max-width: 768px) {
+    .ip {
+      font-size: 24px;
+      padding: 10px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #888 #f2f2f2;
+    }
+
+    .ip::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .ip::-webkit-scrollbar-track {
+      background: #f2f2f2;
+    }
+
+    .ip::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+    }
+
+    .ip::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
+
+  svg.github-corner {
+    fill: #151513;
+    color: #fff;
+  }
+
+  .footer {
+    margin-top: 34px;
+    border-top: 1px solid #cbcbcb;
+  }
+
+  .content {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+    max-width: 1024px;
+  }
+
+  .center {
+    justify-content: center;
+  }
+
+  .info-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .info-table td,
+  .info-table th {
+    padding: 5px;
+    border: 2px solid #ababab;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 0;
+  }
+
+  /* Mobile-specific table improvements */
+  @media (max-width: 768px) {
+    .info-table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+    }
+
+    .info-table tbody {
+      display: table;
+      width: 100%;
+    }
+
+    .info-table td,
+    .info-table th {
+      white-space: normal;
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .info-table td {
+      overflow-x: auto;
+      display: block;
+      max-width: none;
+    }
+  }
+
+  .info-table th[scope='row'] {
+    background-color: #d5d5d5;
+    text-align: left;
+  }
+
+  .widgetbox {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid grey;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .widgetbox.input :first-child::before {
+    content: '$ ';
+    white-space: pre;
+  }
+
+  .widgetbox.output {
+    min-height: 4em;
+    white-space: pre;
+    overflow-x: scroll;
+  }
+
+  .l-box {
+    margin: 0 1rem;
+  }
+
+  .align-right {
+    text-align: right;
+  }
+
+  .medium-input {
+    width: 10em;
+  }
+
+  button.selected {
+    background-color: rgb(208 208 208);
+  }
+
+  .input-buttons {
+    line-height: 2.6em;
+    font-size: smaller;
+  }
+
+  /* POST CORRECTION */
+  .leafcloud-logo .letters {
+    fill: black;
+  }
+
+  /* Better mobile responsiveness */
+  @media (max-width: 768px) {
+    body {
+      margin: 0.5rem !important;
+      margin-top: 1rem !important;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    .l-box {
+      margin: 0 0.5rem;
+    }
+
+    .widgetbox.output {
+      overflow-x: auto;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    code {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* DARK MODE OVERRIDES */
+  @media (prefers-color-scheme: dark) {
+    html,
+    .pure-g [class*='pure-u'],
+    a {
+      background-color: #161719;
+      color: #d8d9da;
+    }
+
+    .ip {
+      border: 1px solid #313233;
+      background: #212223;
+    }
+
+    /* Dark mode scrollbar for IP addresses */
+    .ip::-webkit-scrollbar-track {
+      background: #212223;
+    }
+
+    .ip::-webkit-scrollbar-thumb {
+      background: #555;
+    }
+
+    .ip {
+      scrollbar-color: #555 #212223;
+    }
+
+    .footer {
+      color: #8e8e8e !important;
+      border-top: 1px solid #313233;
+    }
+
+    a:hover,
+    active {
+      background: #3d3e3f;
+    }
+
+    svg.github-corner {
+      fill: #f8f9fa;
+      color: #161719;
+    }
+
+    .info-table th[scope='row'] {
+      background-color: #2e2e2e;
+      color: rgb(220, 220, 220);
+      text-align: left;
+    }
+
+    .pure-button {
+      background-color: #2e2e2e;
+      color: rgb(220, 220, 220);
+    }
+
+    .pure-button.selected {
+      background-color: rgb(125 125 125);
+    }
+
+    .pure-input {
+      background-color: #e6e6e6;
+      color: #666;
+    }
+
+    .pure-input::placeholder {
+      color: #bbb;
+    }
+
+    .leafcloud-logo .letters {
+      fill: white;
+      max-width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .leafcloud-placement {
+      text-align: right;
+    }
+
+    .leafcloud-logo {
+      height: 80px;
+      margin: 2em 0 -0.5em 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .leafcloud-logo {
+      margin-right: 1em;
+    }
+  }
+
+  .debug {
+    outline: 1px dotted pink;
+  }
+</style>

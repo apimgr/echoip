@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//root/Projects/github/apimgr/**)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(rmdir:*)",
+      "Bash(tree:*)",
+      "Bash(go mod tidy:*)",
+      "Bash(go build:*)",
+      "Bash(/tmp/echoip-test:*)",
+      "Read(//tmp/**)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(tar:*)",
+      "Bash(make:*)",
+      "Bash(/tmp/echoip-final:*)",
+      "Bash(cat:*)",
+      "Bash(/tmp/test-version:*)",
+      "Bash(chmod:*)",
+      "Bash(/tmp/final-test:*)",
+      "Bash(go get:*)",
+      "Bash(/tmp/verify-build:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

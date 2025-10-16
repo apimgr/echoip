@@ -1,0 +1,40 @@
+# Production Docker Compose Configuration
+# Uses ./rootfs for persistent storage
+# External port: 172.17.0.1:64180:80 (Docker bridge network)
+
+services:
+  echoip:
+    image: ghcr.io/apimgr/echoip:latest
+    container_name: echoip
+    restart: unless-stopped
+
+    environment:
+      - CONFIG_DIR=/config
+      - DATA_DIR=/data
+      - LOGS_DIR=/logs
+      - PORT=80
+      - ADDRESS=0.0.0.0
+
+    volumes:
+      - ./rootfs/config/echoip:/config
+      - ./rootfs/data/echoip:/data
+      - ./rootfs/logs/echoip:/logs
+
+    ports:
+      - "172.17.0.1:64180:80"
+
+    networks:
+      - echoip
+
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/echoip", "-status"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  echoip:
+    name: echoip
+    external: false
+    driver: bridge

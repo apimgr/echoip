@@ -1,0 +1,27 @@
+# Data files
+/data/
+/custom.html
+
+# Vendor
+/vendor/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build artifacts
+/bin/
+/binaries/
+/releases/
+/rootfs/
+
+# Coverage
+coverage.out
+coverage.html
+
+# OS files
+.DS_Store
+Thumbs.db

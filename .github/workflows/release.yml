@@ -1,0 +1,95 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  schedule:
+    - cron: '0 3 1 * *'  # Monthly on 1st at 3 AM UTC
+  workflow_dispatch:
+
+env:
+  GO_VERSION: '1.23'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Run tests
+        run: make test
+
+  build-binaries:
+    name: Build Binaries
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(cat release.txt)
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Building version: ${VERSION}"
+
+      - name: Build binaries
+        run: make build
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries
+          path: releases/*
+          retention-days: 90
+
+  create-release:
+    name: Create GitHub Release
+    needs: build-binaries
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: binaries
+          path: releases/
+
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(cat release.txt)
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Delete existing release
+        run: gh release delete ${{ steps.version.outputs.VERSION }} -y || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release
+        run: |
+          gh release create ${{ steps.version.outputs.VERSION }} \
+            ./releases/* \
+            --title "${{ steps.version.outputs.VERSION }}" \
+            --notes "Release ${{ steps.version.outputs.VERSION }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
