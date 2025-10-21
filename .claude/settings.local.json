@@ -1,36 +1,69 @@
 {
+  "model": "sonnet[1m]",
   "permissions": {
     "allow": [
-      "Read(//root/Projects/github/apimgr/**)",
-      "Bash(mkdir:*)",
-      "Bash(mv:*)",
-      "Bash(rmdir:*)",
-      "Bash(tree:*)",
-      "Bash(go mod tidy:*)",
-      "Bash(go build:*)",
-      "Bash(/tmp/echoip-test:*)",
-      "Read(//tmp/**)",
-      "Bash(curl:*)",
-      "Bash(echo:*)",
+      "Read(**)",
+      "Write(**)",
+      "WebSearch",
       "WebFetch(domain:github.com)",
-      "Bash(tar:*)",
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(go:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(echo:*)",
       "Bash(make:*)",
-      "Bash(/tmp/echoip-final:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(awk:*)",
+      "Bash(sed:*)",
       "Bash(cat:*)",
-      "Bash(/tmp/test-version:*)",
       "Bash(chmod:*)",
-      "Bash(/tmp/final-test:*)",
-      "Bash(go get:*)",
-      "Bash(/tmp/verify-build:*)",
-      "Bash(/tmp/test-sched:*)",
-      "Bash(/tmp/echoip-complete:*)",
-      "Bash(CGO_ENABLED=1 go build:*)",
-      "Bash(docker run:*)",
-      "Bash(binaries/echoip:*)",
-      "Bash(docker build:*)",
-      "Bash(docker-compose:*)"
+      "Bash(chown:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(incus:*)",
+      "Bash(git:*)",
+      "Bash(pkill:*)",
+      "Bash(rm:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(ls:*)",
+      "Bash(pwd:*)",
+      "Bash(cd:*)",
+      "Bash(head:*)",
+      "Bash(timeout:*)",
+      "Bash(do:*)",
+      "Bash(ln:*)",
+      "Bash(test:*)",
+      "Bash(do)",
+      "Bash(sort:*)",
+      "Bash(paste:*)",
+      "Bash(*:*)"
     ],
-    "deny": [],
+    "deny": [
+      "Bash(git commit:*)"
+    ],
     "ask": []
+  },
+  "preferences": {
+    "auto_commit": false
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write(**)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if grep -qi 'anthropic\\|claude' \"$file\" 2>/dev/null; then echo 'Error: File contains vendor names (Anthropic/Claude)' >&2; exit 1; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "MAX_THINKING_TOKENS": "1000"
   }
 }
+
