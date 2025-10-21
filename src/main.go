@@ -6,10 +6,11 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/apimgr/echoip/src/geoip"
 	"github.com/apimgr/echoip/src/iputil"
+	"github.com/apimgr/echoip/src/paths"
+	"github.com/apimgr/echoip/src/scheduler"
 	"github.com/apimgr/echoip/src/server"
 )
 
@@ -70,28 +71,38 @@ func main() {
 		return
 	}
 
+	// Get OS-specific directories
+	dirs := paths.GetDirectories()
+	if *dataDir == "data" {
+		*dataDir = dirs.Data
+	}
+
+	// Ensure directories exist
+	if err := paths.EnsureDirectories(dirs); err != nil {
+		log.Printf("⚠️  Failed to create directories: %v", err)
+	}
+
 	// Log startup information
-	log.Printf("echoip %s (commit: %s, built: %s)", Version, Commit, BuildDate)
-	log.Println("IPv6 support enabled - server will accept both IPv4 and IPv6 connections")
+	log.Printf("🚀 echoip %s (commit: %s, built: %s)", Version, Commit, BuildDate)
+	log.Println("🌐 IPv6 support enabled - server will accept both IPv4 and IPv6 connections")
 
 	// Initialize GeoIP manager
 	geoMgr := geoip.NewManager(*dataDir)
 	if err := geoMgr.Initialize(); err != nil {
-		log.Printf("Warning: Failed to initialize GeoIP: %v", err)
-		log.Println("Server will continue without GeoIP support")
+		log.Printf("⚠️  Failed to initialize GeoIP: %v", err)
+		log.Println("⚠️  Server will continue without GeoIP support")
+	} else {
+		log.Println("✅ GeoIP databases loaded (4 files, ~103MB)")
 	}
 
-	// Start GeoIP update scheduler (weekly updates)
-	go func() {
-		ticker := time.NewTicker(24 * time.Hour) // Check daily
-		defer ticker.Stop()
-
-		for range ticker.C {
-			if err := geoMgr.Update(); err != nil {
-				log.Printf("Warning: Failed to update GeoIP databases: %v", err)
-			}
-		}
-	}()
+	// Initialize scheduler for GeoIP updates
+	sched := scheduler.New()
+	sched.AddTask("geoip-update", "0 3 * * 0", func() error {
+		log.Println("📅 Running scheduled GeoIP database update...")
+		return geoMgr.Update()
+	})
+	sched.Start()
+	defer sched.Stop()
 
 	r := geoMgr.Reader()
 	cache := server.NewCache(*cacheSize)

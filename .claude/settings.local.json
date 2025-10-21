@@ -21,7 +21,14 @@
       "Bash(chmod:*)",
       "Bash(/tmp/final-test:*)",
       "Bash(go get:*)",
-      "Bash(/tmp/verify-build:*)"
+      "Bash(/tmp/verify-build:*)",
+      "Bash(/tmp/test-sched:*)",
+      "Bash(/tmp/echoip-complete:*)",
+      "Bash(CGO_ENABLED=1 go build:*)",
+      "Bash(docker run:*)",
+      "Bash(binaries/echoip:*)",
+      "Bash(docker build:*)",
+      "Bash(docker-compose:*)"
     ],
     "deny": [],
     "ask": []
